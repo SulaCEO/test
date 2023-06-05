@@ -23,6 +23,7 @@ const App: FC =()=>{
 
   return (
     <div className="App">
+      <h1>Test Branch test</h1>
       <form action="">
         <input type="text" placeholder='name...' value={data.name} onChange={(e)=>setData({...data, name: e.target.value})}/>
         <input type="number" placeholder='age...' value={data.age} onChange={(e)=>setData({...data, age: Number(e.target.value)})}/>
