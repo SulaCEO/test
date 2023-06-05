@@ -1,56 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { dicrement, getAllPosts, increment } from './redux/reducers/MainSlice';
 
-function App() {
+type TypeData = {
+  id: number,
+  name: string,
+  age: number
+}
+
+const App: FC =()=>{
+  const dispatch = useAppDispatch();
+  const [data, setData] = useState<TypeData>({} as TypeData);
+  const {posts} = useAppSelector((state)=>state.MainSlice);
+
+  const handleClick = () =>{
+    console.log(data)
+  }
+
+  useEffect(()=>{
+    dispatch(getAllPosts());
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <form action="">
+        <input type="text" placeholder='name...' value={data.name} onChange={(e)=>setData({...data, name: e.target.value})}/>
+        <input type="number" placeholder='age...' value={data.age} onChange={(e)=>setData({...data, age: Number(e.target.value)})}/>
+        <button onClick={handleClick} type='button'>Click</button>
+      </form>
+      <div className="posts">
+        {posts.map((item)=>(
+          <h2>{item.title}</h2>
+        ))}
+      </div>
     </div>
   );
 }
